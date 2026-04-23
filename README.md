@@ -2,38 +2,39 @@
 
 Production-oriented Laravel blueprint for an AI-powered education and utilities SaaS platform.
 
-## Included in this repository
+## ✅ UPDATED Scope delivered
+- Dynamic Module Builder foundation (module/form fields/records)
+- Admin user CRUD + approval workflow scaffold
+- AI bilingual content generation + rewrite ingestion pipeline (Hindi-first)
+- SEO essentials: dynamic meta strategy + sitemap endpoint scaffold
+- Bootstrap 5.3 responsive UI baseline with mobile-friendly data tables
+- MySQL-ready migrations with indexing and categorized content models
 
-- Modular architecture scaffold (module builder + dynamic entities)
-- Core migrations for users, roles, profiles, modules, blog, vacancies, government orders, educational resources
-- Service layer + repository pattern examples
-- REST API route scaffold, admin route scaffold
-- AI integration hooks (OpenAI-ready abstraction)
-- Security defaults checklist and operational guide
-
-## Quick Start (inside a real Laravel app)
-
-1. Copy this scaffold into a fresh Laravel 12+ project.
-2. Install required packages:
+## Setup (Laravel 12+)
+1. Create Laravel app (outside restricted network if needed), then copy this scaffold.
+2. Install packages:
    - `laravel/sanctum`
-   - `laravel/socialite`
+   - `laravel/socialite` (Google OAuth)
    - `spatie/laravel-permission`
    - `spatie/laravel-activitylog`
    - `predis/predis`
-3. Configure `.env` for MySQL and Redis.
-4. Run migrations and seeders.
-5. Build frontend with Vite.
+3. Configure `.env`:
+   - `DB_CONNECTION=mysql`
+   - `QUEUE_CONNECTION=redis`
+   - `CACHE_STORE=redis`
+   - `SESSION_DRIVER=redis`
+   - Google OAuth keys (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`)
+4. Run:
+   - `php artisan migrate`
+   - `php artisan db:seed`
 
-## Security principles
+## Security defaults
+- Validation applied on API/admin mutations
+- CSRF middleware on blade forms
+- Eloquent-based query builder (SQL injection protection)
+- Sanitized content ingestion for AI rewrite pipeline
+- Approval workflow for user/content publishing gates
 
-- Strict validation on all mutable endpoints
-- Policies + role/permission gates
-- File uploads validated by MIME and size
-- Rate limiting for auth and AI endpoints
-- Personally sensitive data encrypted at rest
-
-## Future-ready extension points
-
-- GraphQL can be layered on existing service classes
-- Queue-backed workloads (poster generation, compression, recommendation jobs)
-- Tenant support can be introduced via tenant_id columns and scoped repositories
+## Notes
+- This repo is a scaffold and intentionally provider-agnostic for OpenAI/Gemini final integration.
+- For production, add queue jobs for scraping/AI generation, rate limits per plan, and observability.

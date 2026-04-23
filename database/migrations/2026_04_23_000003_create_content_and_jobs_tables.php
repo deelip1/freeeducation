@@ -9,15 +9,38 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        // ✅ UPDATED: robust categorization + approval workflow for content.
+        Schema::create('blog_categories', function (Blueprint $table): void {
+            $table->id();
+            $table->string('name', 100);
+            $table->string('slug', 120)->unique();
+            $table->string('description', 255)->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('blog_posts', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('blog_categories')->nullOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
             $table->longText('content');
             $table->json('seo_meta')->nullable();
+            $table->enum('approval_status', ['draft', 'pending', 'approved', 'rejected'])->default('draft')->index();
             $table->timestamp('published_at')->nullable()->index();
+            $table->timestamps();
+        });
+
+        Schema::create('news_announcements', function (Blueprint $table): void {
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->longText('content');
+            $table->enum('announcement_type', ['news', 'alert', 'announcement'])->default('announcement')->index();
+            $table->timestamp('effective_from')->nullable()->index();
+            $table->timestamp('effective_to')->nullable()->index();
+            $table->boolean('is_published')->default(false)->index();
             $table->timestamps();
         });
 
@@ -60,6 +83,8 @@ return new class extends Migration {
         Schema::dropIfExists('educational_resources');
         Schema::dropIfExists('government_orders');
         Schema::dropIfExists('vacancies');
+        Schema::dropIfExists('news_announcements');
         Schema::dropIfExists('blog_posts');
+        Schema::dropIfExists('blog_categories');
     }
 };

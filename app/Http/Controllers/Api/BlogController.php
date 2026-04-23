@@ -15,14 +15,15 @@ class BlogController extends Controller
     {
         $validated = $request->validate([
             'topic' => ['required', 'string', 'max:160'],
-            'language' => ['required', 'string', 'in:en,hi'],
+            'language' => ['nullable', 'string', 'in:en,hi'],
         ]);
 
         return response()->json([
             'suggestion' => $ai->generateEducationalDraft(
                 $validated['topic'],
-                $validated['language']
+                (string) ($validated['language'] ?? '')
             ),
+            'preferred_language' => config('freeeducation.ai.default_language', 'hi'),
         ]);
     }
 }
