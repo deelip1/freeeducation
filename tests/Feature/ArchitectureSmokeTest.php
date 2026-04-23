@@ -12,8 +12,10 @@ class ArchitectureSmokeTest extends TestCase
     {
         $this->assertDirectoryExists(__DIR__ . '/../../app/Services/Modules');
         $this->assertDirectoryExists(__DIR__ . '/../../app/Services/AI');
+        $this->assertDirectoryExists(__DIR__ . '/../../app/Services/Tax');
         $this->assertDirectoryExists(__DIR__ . '/../../database/migrations');
         $this->assertDirectoryExists(__DIR__ . '/../../resources/views/admin/users');
+        $this->assertDirectoryExists(__DIR__ . '/../../resources/views/dashboard/itr');
     }
 
     public function test_bootstrap_layout_uses_responsive_table_wrapper_pattern(): void

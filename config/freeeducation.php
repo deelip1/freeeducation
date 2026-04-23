@@ -9,12 +9,18 @@ return [
         'whatsapp_notifications' => env('FEATURE_WHATSAPP_NOTIFICATIONS', false),
         'content_approval_required' => env('FEATURE_CONTENT_APPROVAL_REQUIRED', true),
         'google_oauth' => env('FEATURE_GOOGLE_OAUTH', true),
+        'itr_otp_login' => env('FEATURE_ITR_OTP_LOGIN', true),
     ],
 
     'ai' => [
         'provider' => env('AI_PROVIDER', 'openai'),
         'default_language' => env('AI_DEFAULT_LANGUAGE', 'hi'),
         'max_source_chars' => (int) env('AI_MAX_SOURCE_CHARS', 20000),
+    ],
+
+    'itr' => [
+        'default_assessment_year' => env('ITR_DEFAULT_ASSESSMENT_YEAR', '2026-27'),
+        'compliance_note' => env('ITR_COMPLIANCE_NOTE', 'Review against latest CBDT notifications before final submission.'),
     ],
 
     'seo' => [

@@ -18,6 +18,7 @@ Set in `.env`:
 - `AI_PROVIDER=openai` (or gemini)
 - `AI_DEFAULT_LANGUAGE=hi`
 - `FEATURE_CONTENT_APPROVAL_REQUIRED=true`
+- `ITR_DEFAULT_ASSESSMENT_YEAR=2026-27`
 
 Google OAuth:
 - `GOOGLE_CLIENT_ID=...`
@@ -30,10 +31,11 @@ Google OAuth:
 - Keep APP_DEBUG disabled in production
 - Admin-only approval routes behind role permissions
 - Sanitize and length-limit all ingested source content
+- Encrypt PAN/Aadhaar-adjacent PII fields before persistent storage where required
 
 ## 4) Release process
 1. `php artisan migrate --force`
 2. `php artisan db:seed --class=DemoContentSeeder --force`
 3. `php artisan config:cache && php artisan route:cache && php artisan view:cache`
 4. `php artisan queue:restart`
-5. Verify `/`, `/sitemap.xml`, admin user table responsive view, and authenticated API routes.
+5. Verify `/`, `/itr/wizard`, `/sitemap.xml`, admin user table responsive view, `/api/itr/profile`, and `/api/itr/compute`.

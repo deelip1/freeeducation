@@ -23,6 +23,7 @@
             <div class="card-body">
                 <h2 class="h5">Quick Links</h2>
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent px-0"><a href="{{ route('itr.wizard') }}">ITR AI Wizard</a></li>
                     <li class="list-group-item bg-transparent px-0"><a href="{{ route('admin.users.index') }}">Admin Users</a></li>
                     <li class="list-group-item bg-transparent px-0"><a href="{{ route('admin.modules.index') }}">Dynamic Modules</a></li>
                     <li class="list-group-item bg-transparent px-0"><a href="{{ route('seo.sitemap') }}">Sitemap XML</a></li>

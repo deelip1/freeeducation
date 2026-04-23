@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Tax\ItrFiling;
+use App\Models\Tax\ItrProfile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -45,5 +47,16 @@ class User extends Authenticatable
     public function socialAccounts(): HasMany
     {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    // ✅ UPDATED: Dedicated ITR profile for tax filing workflow.
+    public function itrProfile(): HasOne
+    {
+        return $this->hasOne(ItrProfile::class);
+    }
+
+    public function itrFilings(): HasMany
+    {
+        return $this->hasMany(ItrFiling::class);
     }
 }

@@ -27,10 +27,20 @@ class AiAssistantService
         return "Rewrite into {$langInstruction}. Use only factual meaning from input, add educational context, headings, sub-headings, bullet points, and do not copy original sentence structure.\nFacts:\n" . $sanitizedFacts;
     }
 
-    public function suggestItrForm(array $taxProfile): string
+    // ✅ UPDATED: AI hinting for tax-saving deductions.
+    public function suggestTaxSavings(array $income, array $deductions): array
     {
-        $businessIncome = (float) ($taxProfile['business_income'] ?? 0);
+        $suggestions = [];
+        if ((float) ($deductions['section_80c'] ?? 0) < 150000) {
+            $suggestions[] = 'You may optimize Section 80C up to ₹1,50,000 (PPF/ELSS/LIC).';
+        }
+        if ((float) ($deductions['section_80d'] ?? 0) < 25000) {
+            $suggestions[] = 'Consider medical insurance deduction under Section 80D.';
+        }
+        if ((float) ($income['salary_income'] ?? 0) > 0) {
+            $suggestions[] = 'Validate HRA, standard deduction, and Form-16 consistency before filing.';
+        }
 
-        return $businessIncome > 0 ? 'ITR-4 (likely)' : 'ITR-1 (likely)';
+        return $suggestions;
     }
 }

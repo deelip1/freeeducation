@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\NewsAnnouncement;
+use App\Models\Tax\TaxRule;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -50,6 +51,47 @@ class DemoContentSeeder extends Seeder
             'announcement_type' => 'announcement',
             'effective_from' => now(),
             'is_published' => true,
+        ]);
+
+        $this->seedItrRules();
+    }
+
+    private function seedItrRules(): void
+    {
+        TaxRule::query()->updateOrCreate([
+            'assessment_year' => '2026-27',
+            'regime' => 'old',
+        ], [
+            'slabs' => [
+                ['from' => 0, 'to' => 250000, 'rate' => 0],
+                ['from' => 250000, 'to' => 500000, 'rate' => 5],
+                ['from' => 500000, 'to' => 1000000, 'rate' => 20],
+                ['from' => 1000000, 'to' => null, 'rate' => 30],
+            ],
+            'standard_deduction' => 50000,
+            'rebate_threshold' => 500000,
+            'rebate_amount' => 12500,
+            'cess_percent' => 4,
+            'is_active' => true,
+        ]);
+
+        TaxRule::query()->updateOrCreate([
+            'assessment_year' => '2026-27',
+            'regime' => 'new',
+        ], [
+            'slabs' => [
+                ['from' => 0, 'to' => 300000, 'rate' => 0],
+                ['from' => 300000, 'to' => 700000, 'rate' => 5],
+                ['from' => 700000, 'to' => 1000000, 'rate' => 10],
+                ['from' => 1000000, 'to' => 1200000, 'rate' => 15],
+                ['from' => 1200000, 'to' => 1500000, 'rate' => 20],
+                ['from' => 1500000, 'to' => null, 'rate' => 30],
+            ],
+            'standard_deduction' => 75000,
+            'rebate_threshold' => 700000,
+            'rebate_amount' => 25000,
+            'cess_percent' => 4,
+            'is_active' => true,
         ]);
     }
 }
