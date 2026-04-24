@@ -12,6 +12,16 @@ return [
         'itr_otp_login' => env('FEATURE_ITR_OTP_LOGIN', true),
     ],
 
+    // ✅ UPDATED: platform engine toggles for modular ecosystem rollout.
+    'engines' => [
+        'cms' => env('ENGINE_CMS_ENABLED', true),
+        'tools' => env('ENGINE_TOOLS_ENABLED', true),
+        'ai' => env('ENGINE_AI_ENABLED', true),
+        'itr' => env('ENGINE_ITR_ENABLED', true),
+        'users' => env('ENGINE_USERS_ENABLED', true),
+        'admin' => env('ENGINE_ADMIN_ENABLED', true),
+    ],
+
     'ai' => [
         'provider' => env('AI_PROVIDER', 'openai'),
         'default_language' => env('AI_DEFAULT_LANGUAGE', 'hi'),
