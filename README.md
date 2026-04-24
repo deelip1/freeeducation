@@ -32,22 +32,20 @@ Production-oriented Laravel blueprint for a modular, scalable platform combining
    - `QUEUE_CONNECTION=redis`
    - `CACHE_STORE=redis`
    - `SESSION_DRIVER=redis`
-   - `PDF_COMPRESSOR_DRIVER=ghostscript`
-   - `DEMO_ADMIN_PASSWORD=...`
+   - Google OAuth keys (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`)
+   - `ITR_DEFAULT_ASSESSMENT_YEAR=2026-27`
 4. Run:
    - `php artisan migrate`
    - `php artisan db:seed`
 
 ## Security defaults
-- Strict validation for all APIs/forms
-- Eloquent query builder (SQLi-safe patterns)
-- CSRF on web forms
-- Aadhaar encryption for ITR profile data
-- Content approval workflow for moderation
-- Tool usage logging for abuse monitoring
+- Validation applied on API/admin mutations
+- CSRF middleware on blade forms
+- Eloquent-based query builder (SQL injection protection)
+- Sanitized content ingestion for AI rewrite pipeline
+- Approval workflow for user/content publishing gates
+- PAN format validation + Aadhaar encryption for ITR profiles
 
-## Implementation roadmap (recommended)
-1. CMS + Blog moderation workflows
-2. PDF tools (compress/merge/split pipeline jobs)
-3. Social creator templates + render workers
-4. Subscription, quotas, advanced analytics
+## Notes
+- This repo is a scaffold and intentionally provider-agnostic for OpenAI/Gemini final integration.
+- For production, add queue jobs for OCR/Form-16 parsing, OTP gateway integration, and strict role policies.

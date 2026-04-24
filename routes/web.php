@@ -12,6 +12,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/itr/wizard', 'dashboard.itr.wizard')->name('itr.wizard');
 Route::view('/blog', 'blog.index')->name('blog.index');
 Route::view('/blog/{slug}', 'blog.show')->name('blog.show');
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', fn () => view('dashboard.index'))->name('home');
+Route::get('/itr/wizard', fn () => view('dashboard.itr.wizard'))->name('itr.wizard');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('seo.sitemap');
 
 Route::middleware('guest')->group(function (): void {
@@ -29,6 +33,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
     Route::patch('/users/{user}/approve', [UserManagementController::class, 'approve'])->name('users.approve');
 
+    // ✅ UPDATED: Admin-managed tax rules for AY/regime updates.
     Route::get('/tax-rules', [TaxRuleController::class, 'index'])->name('tax-rules.index');
     Route::post('/tax-rules', [TaxRuleController::class, 'store'])->name('tax-rules.store');
 });

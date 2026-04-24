@@ -16,6 +16,7 @@ class BlogCategory extends Model
     {
         return ['is_active' => 'boolean'];
     }
+    protected $fillable = ['name', 'slug', 'description'];
 
     public function posts(): HasMany
     {

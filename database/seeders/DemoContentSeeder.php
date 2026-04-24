@@ -13,6 +13,9 @@ use App\Models\Tools\Tool;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Tax\TaxRule;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class DemoContentSeeder extends Seeder
@@ -34,6 +37,9 @@ class DemoContentSeeder extends Seeder
             'is_active' => true,
         ]);
 
+            ['name' => 'Platform Admin', 'password' => 'Password@123', 'is_approved' => true]
+        );
+
         $categories = collect(['Exams', 'Scholarships', 'Technology', 'Government Orders'])
             ->map(fn (string $name) => BlogCategory::query()->firstOrCreate([
                 'slug' => Str::slug($name),
@@ -46,6 +52,12 @@ class DemoContentSeeder extends Seeder
 
         foreach ($categories as $category) {
             $post = BlogPost::query()->firstOrCreate([
+                'name' => $name,
+                'description' => $name . ' updates',
+            ]));
+
+        foreach ($categories as $category) {
+            BlogPost::query()->firstOrCreate([
                 'slug' => $category->slug . '-intro',
             ], [
                 'author_id' => $author->id,
@@ -75,6 +87,10 @@ class DemoContentSeeder extends Seeder
             'settings' => ['templates' => ['birthday', 'festival', 'motivation', 'cyber-awareness']],
             'is_active' => true,
         ]);
+
+                'published_at' => now(),
+            ]);
+        }
 
         NewsAnnouncement::query()->firstOrCreate([
             'slug' => 'platform-launch-announcement',
