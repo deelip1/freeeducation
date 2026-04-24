@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function (): void {
     Route::post('/blog/suggest', [BlogController::class, 'suggestContent']);
     Route::post('/content/rewrite', [ContentAiController::class, 'rewrite']);
+// In routes/api.php
+Route::post('/content/rewrite', [ContentAiController::class, 'rewrite'])->middleware('premium');
 
-    // ✅ UPDATED: ITR filing APIs.
+// ✅ UPDATED: ITR filing APIs.
     Route::post('/itr/profile', [ItrController::class, 'saveProfile']);
     Route::post('/itr/compute', [ItrController::class, 'compute']);
 });

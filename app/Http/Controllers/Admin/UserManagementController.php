@@ -29,6 +29,9 @@ class UserManagementController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8'],
             'is_approved' => ['boolean'],
+            // ✅ HIGHLIGHT: Allow setting role and tier on creation.
+            'role' => ['nullable', 'in:admin,moderator,educator,student,user'],
+            'subscription_tier' => ['nullable', 'in:free,premium,agency'],
         ]);
 
         User::query()->create($validated);
@@ -38,15 +41,18 @@ class UserManagementController extends Controller
 
     public function update(Request $request, User $user): RedirectResponse
     {
+        // ✅ HIGHLIGHT: Added strict validation for SaaS tier and role management.
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'is_approved' => ['boolean'],
+            'role' => ['required', 'in:admin,moderator,educator,student,user'],
+            'subscription_tier' => ['required', 'in:free,premium,agency'],
         ]);
 
         $user->update($validated);
 
-        return back()->with('status', 'User updated successfully.');
+        return back()->with('status', 'User access and subscription updated successfully.');
     }
 
     public function destroy(User $user): RedirectResponse
