@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // ✅ UPDATED: central feature + SEO + AI pipeline controls.
     'features' => [
         'ai_blog_suggestions' => env('FEATURE_AI_BLOG_SUGGESTIONS', true),
         'ai_poster_generator' => env('FEATURE_AI_POSTER_GENERATOR', true),

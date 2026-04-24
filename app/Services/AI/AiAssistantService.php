@@ -19,6 +19,7 @@ class AiAssistantService
         );
     }
 
+    // ✅ UPDATED: supports clean rewrite pipeline instructions.
     public function generateRewritePrompt(string $sanitizedFacts, string $language): string
     {
         $langInstruction = $language === 'hi' ? 'Hindi (देवनागरी)' : 'English';
@@ -26,6 +27,7 @@ class AiAssistantService
         return "Rewrite into {$langInstruction}. Use only factual meaning from input, add educational context, headings, sub-headings, bullet points, and do not copy original sentence structure.\nFacts:\n" . $sanitizedFacts;
     }
 
+    // ✅ UPDATED: AI hinting for tax-saving deductions.
     public function suggestTaxSavings(array $income, array $deductions): array
     {
         $suggestions = [];

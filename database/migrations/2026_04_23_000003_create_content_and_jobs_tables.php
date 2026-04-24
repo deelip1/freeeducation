@@ -49,6 +49,9 @@ return new class extends Migration {
             $table->string('title');
             $table->string('organization');
             $table->string('location')->nullable();
+            // ✅ HIGHLIGHT: Added region-specific filters to prevent integrity violation bugs.
+            $table->string('district')->nullable()->index();
+            $table->string('state')->nullable()->index();
             $table->date('application_deadline')->nullable()->index();
             $table->string('source_url')->nullable();
             $table->enum('type', ['government', 'private'])->default('government')->index();
@@ -72,6 +75,9 @@ return new class extends Migration {
             $table->string('class_level', 50)->index();
             $table->string('subject', 100)->index();
             $table->string('board', 100)->index();
+            // ✅ HIGHLIGHT: Allow localization for educational resources.
+            $table->string('district')->nullable()->index();
+            $table->string('state')->nullable()->index();
             $table->enum('resource_type', ['note', 'pdf', 'video'])->index();
             $table->string('resource_path');
             $table->timestamps();
@@ -87,4 +93,5 @@ return new class extends Migration {
         Schema::dropIfExists('blog_posts');
         Schema::dropIfExists('blog_categories');
     }
+};
 };
