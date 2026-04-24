@@ -10,13 +10,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BlogCategory extends Model
 {
-    protected $fillable = ['parent_id', 'name', 'slug', 'description', 'is_active'];
+    // ✅ HIGHLIGHT: Consolidated into a single $fillable declaration supporting subcategories.
+    protected $fillable = [
+        'parent_id', 
+        'name', 
+        'slug', 
+        'description', 
+        'is_active'
+    ];
 
     protected function casts(): array
     {
-        return ['is_active' => 'boolean'];
+        return [
+            'is_active' => 'boolean'
+        ];
     }
-    protected $fillable = ['name', 'slug', 'description'];
 
     public function posts(): HasMany
     {
