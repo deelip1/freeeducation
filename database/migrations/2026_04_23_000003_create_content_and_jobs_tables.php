@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        // ✅ UPDATED: robust categorization + approval workflow for content.
         Schema::create('blog_categories', function (Blueprint $table): void {
             $table->id();
             $table->string('name', 100);
@@ -92,4 +93,5 @@ return new class extends Migration {
         Schema::dropIfExists('blog_posts');
         Schema::dropIfExists('blog_categories');
     }
+};
 };

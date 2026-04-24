@@ -5,6 +5,13 @@ use App\Http\Controllers\Admin\Tax\TaxRuleController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Api\SitemapController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\Web\HomeController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::view('/itr/wizard', 'dashboard.itr.wizard')->name('itr.wizard');
+Route::view('/blog', 'blog.index')->name('blog.index');
+Route::view('/blog/{slug}', 'blog.show')->name('blog.show');
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('dashboard.index'))->name('home');

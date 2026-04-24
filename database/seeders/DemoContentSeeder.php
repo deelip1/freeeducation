@@ -7,6 +7,12 @@ namespace Database\Seeders;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\NewsAnnouncement;
+use App\Models\Tag;
+use App\Models\Tax\TaxRule;
+use App\Models\Tools\Tool;
+use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Tax\TaxRule;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,6 +24,19 @@ class DemoContentSeeder extends Seeder
     {
         $author = User::query()->firstOrCreate(
             ['email' => 'admin@free-education.fun'],
+            [
+                'name' => 'Platform Admin',
+                'password' => Hash::make((string) env('DEMO_ADMIN_PASSWORD', 'ChangeMe@1234')),
+                'is_approved' => true,
+            ]
+        );
+
+        $parent = BlogCategory::query()->firstOrCreate(['slug' => 'education'], [
+            'name' => 'Education',
+            'description' => 'Main education hub',
+            'is_active' => true,
+        ]);
+
             ['name' => 'Platform Admin', 'password' => 'Password@123', 'is_approved' => true]
         );
 
@@ -25,6 +44,14 @@ class DemoContentSeeder extends Seeder
             ->map(fn (string $name) => BlogCategory::query()->firstOrCreate([
                 'slug' => Str::slug($name),
             ], [
+                'parent_id' => $parent->id,
+                'name' => $name,
+                'description' => $name . ' updates',
+                'is_active' => true,
+            ]));
+
+        foreach ($categories as $category) {
+            $post = BlogPost::query()->firstOrCreate([
                 'name' => $name,
                 'description' => $name . ' updates',
             ]));
@@ -39,6 +66,28 @@ class DemoContentSeeder extends Seeder
                 'excerpt' => 'Demo seeded content for UI and routing validation.',
                 'content' => 'Structured demo content with headings, bullet points and educational context.',
                 'approval_status' => 'approved',
+                'is_featured' => true,
+                'published_at' => now(),
+            ]);
+
+            $tag = Tag::query()->firstOrCreate(['slug' => Str::slug($category->name)], ['name' => $category->name]);
+            $post->tags()->syncWithoutDetaching([$tag->id]);
+        }
+
+        Tool::query()->firstOrCreate(['slug' => 'pdf-compressor'], [
+            'name' => 'PDF Compressor',
+            'tool_type' => 'pdf',
+            'settings' => ['driver' => config('freeeducation.tools.pdf_compressor_driver', 'ghostscript')],
+            'is_active' => true,
+        ]);
+
+        Tool::query()->firstOrCreate(['slug' => 'social-media-creator'], [
+            'name' => 'Social Media Creator',
+            'tool_type' => 'social_creator',
+            'settings' => ['templates' => ['birthday', 'festival', 'motivation', 'cyber-awareness']],
+            'is_active' => true,
+        ]);
+
                 'published_at' => now(),
             ]);
         }

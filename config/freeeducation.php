@@ -18,6 +18,11 @@ return [
         'max_source_chars' => (int) env('AI_MAX_SOURCE_CHARS', 20000),
     ],
 
+    'tools' => [
+        'pdf_compressor_driver' => env('PDF_COMPRESSOR_DRIVER', 'ghostscript'),
+        'max_upload_mb' => (int) env('TOOLS_MAX_UPLOAD_MB', 20),
+    ],
+
     'itr' => [
         'default_assessment_year' => env('ITR_DEFAULT_ASSESSMENT_YEAR', '2026-27'),
         'compliance_note' => env('ITR_COMPLIANCE_NOTE', 'Review against latest CBDT notifications before final submission.'),

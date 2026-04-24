@@ -43,4 +43,22 @@ class AiAssistantService
 
         return $suggestions;
     }
+
+    // ✅ UPDATED: social media creator text generation payload.
+    public function generateSocialPack(string $category, string $language = 'hi'): array
+    {
+        $isHindi = $language === 'hi';
+
+        return [
+            'caption' => $isHindi
+                ? "{$category} के लिए प्रेरक संदेश तैयार है।"
+                : "Your {$category} post is ready with an engaging message.",
+            'quote' => $isHindi
+                ? 'ज्ञान और जागरूकता ही सबसे बड़ी शक्ति है।'
+                : 'Awareness and learning are your strongest powers.',
+            'hashtags' => $isHindi
+                ? ['#शिक्षा', '#प्रेरणा', '#DigitalIndia', '#FreeEducationFun']
+                : ['#Education', '#Motivation', '#DigitalIndia', '#FreeEducationFun'],
+        ];
+    }
 }

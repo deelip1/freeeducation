@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('title', 'Admin Users | free-education.fun')
+
+@section('content')
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h4 mb-0">User Management</h1>
+            <form method="get" class="d-flex gap-2">
+                <input type="text" class="form-control" name="q" value="{{ request('q') }}" placeholder="Search name">
+                <button type="submit" class="btn btn-primary">Search</button>
 @section('title', 'Admin Users | EduSaaS PRO')
 
 @section('content')
@@ -20,6 +30,14 @@
         </div>
 
         <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                 <tr>
@@ -33,6 +51,27 @@
                 <tbody>
                 @forelse($users as $user)
                     <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>
+                            @if($user->is_approved)
+                                <span class="badge text-bg-success">Approved</span>
+                            @else
+                                <span class="badge text-bg-warning">Pending</span>
+                            @endif
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group" role="group">
+                                <form method="post" action="{{ route('admin.users.approve', $user) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button class="btn btn-sm btn-outline-success" type="submit">Approve</button>
+                                </form>
+                                <form method="post" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('Delete this user?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold me-3" style="width: 40px; height: 40px;">
@@ -96,12 +135,17 @@
                         </td>
                     </tr>
                 @empty
+                    <tr><td colspan="5" class="text-center text-muted">No users found.</td></tr>
                     <tr><td colspan="5" class="text-center py-4 text-muted"><i class="bi bi-inbox fs-2 d-block mb-2"></i>No users found matching your criteria.</td></tr>
                 @endforelse
                 </tbody>
             </table>
         </div>
 
+        {{ $users->links() }}
+    </div>
+</div>
+@endsection
         <div class="mt-4">
             {{ $users->links() }}
         </div>

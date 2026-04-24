@@ -8,6 +8,7 @@ use App\Models\Tax\TaxRule;
 
 class ItrComputationService
 {
+    // ✅ UPDATED: full regime comparison, slab computation, cess, rebate, and tax credit adjustment.
     // ✅ HIGHLIGHT: Full regime comparison, slab computation, cess, rebate, and tax credit adjustment.
     public function compareRegimes(array $income, array $deductions, array $credits, string $assessmentYear): array
     {
@@ -31,6 +32,7 @@ class ItrComputationService
         $hasCapitalGains = (float) ($income['capital_gains'] ?? 0) > 0;
         $business = (float) ($income['business_income'] ?? 0);
 
+        if ($business > 0 && in_array($employmentType, ['business', 'professional'], true)) {
         // If there is any business income declared, it MUST be ITR-3 or ITR-4.
         if ($business > 0) {
             return ($business <= 5000000) ? 'ITR-4' : 'ITR-3';
@@ -148,4 +150,5 @@ class ItrComputationService
                 ['from' => 1500000, 'to' => null, 'rate' => 30],
             ];
     }
+}
 }

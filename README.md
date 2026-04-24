@@ -1,29 +1,29 @@
-# free-education.fun (Laravel SaaS Blueprint)
+# free-education.fun (AI Content + Tools + Utility SaaS)
 
-Production-oriented Laravel blueprint for an AI-powered education and utilities SaaS platform.
+Production-oriented Laravel blueprint for a modular, scalable platform combining CMS, tools marketplace, and ITR utility.
 
-## ✅ UPDATED Scope delivered
-- Dynamic Module Builder foundation (module/form fields/records)
-- Admin user CRUD + approval workflow scaffold
-- AI bilingual content generation + rewrite ingestion pipeline (Hindi-first)
-- SEO essentials: dynamic meta strategy + sitemap endpoint scaffold
-- Bootstrap 5.3 responsive UI baseline with mobile-friendly data tables
-- MySQL-ready migrations with indexing and categorized content models
-- ✅ Advanced ITR module scaffold (profile, rules, computations, filing drafts)
+## ✅ UPDATED Vision Architecture
+- CMS Engine: WordPress-like blog (categories/subcategories, tags, featured posts, SEO metadata)
+- Tools Engine: PDF Compressor + Social Media Creator + ITR workflows
+- AI Engine: bilingual content generation/rewrite + social caption/quote/hashtags + tax-saving hints
+- User System: role-ready auth with Google OAuth scaffold and approval gates
+- Admin Panel: module builder, user moderation, tax-rule management
 
-## ITR module highlights
-- PAN-based profile + optional Aadhaar linking (encrypted at rest)
-- Income/deduction/credit payload capture for Indian ITR flow
-- Old vs New regime comparison with slab-tax, rebate 87A, cess, and interest inputs
-- ITR form suggestion (ITR-1 / ITR-2 / ITR-3 / ITR-4)
-- Output packs for computation sheet, form-16-like summary, and ITR draft JSON
-- Admin-manageable tax rules by Assessment Year + Regime
+## ✅ UPDATED Delivered in this phase
+- Premium homepage layout with hero + featured slider + category sections
+- CMS API (`/api/cms/posts`) with approval-aware publishing and SEO meta/schema generation
+- Tools APIs:
+  - `POST /api/tools/pdf/compress`
+  - `POST /api/tools/social/generate`
+- Tools telemetry tables (`tools`, `tool_usages`, `designs`, `ai_logs`)
+- Blog taxonomy upgrades (subcategory support + tags pivot)
+- Existing ITR module retained and integrated
 
 ## Setup (Laravel 12+)
-1. Create Laravel app (outside restricted network if needed), then copy this scaffold.
+1. Create Laravel app, then copy this scaffold.
 2. Install packages:
    - `laravel/sanctum`
-   - `laravel/socialite` (Google OAuth)
+   - `laravel/socialite`
    - `spatie/laravel-permission`
    - `spatie/laravel-activitylog`
    - `predis/predis`

@@ -1,0 +1,63 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Api\Cms;
+
+use App\Http\Controllers\Controller;
+use App\Models\BlogPost;
+use App\Models\Tag;
+use App\Services\SEO\SeoMetaService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class PostController extends Controller
+{
+    public function index(): JsonResponse
+    {
+        $posts = BlogPost::query()->with(['category', 'tags'])->latest()->paginate(12);
+
+        return response()->json($posts);
+    }
+
+    public function store(Request $request, SeoMetaService $seo): JsonResponse
+    {
+        $payload = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'category_id' => ['nullable', 'exists:blog_categories,id'],
+            'excerpt' => ['nullable', 'string', 'max:500'],
+            'content' => ['required', 'string'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['string', 'max:80'],
+            'is_featured' => ['boolean'],
+            'publish_now' => ['boolean'],
+        ]);
+
+        $slug = Str::slug($payload['title']) . '-' . Str::lower(Str::random(6));
+        $meta = $seo->articleMeta($payload['title'], $payload['content'], url('/blog/' . $slug));
+        $schema = $seo->articleSchema(['title' => $payload['title'], 'author_name' => (string) $request->user()?->name]);
+
+        $post = BlogPost::query()->create([
+            'author_id' => $request->user()->id,
+            'category_id' => $payload['category_id'] ?? null,
+            'title' => $payload['title'],
+            'slug' => $slug,
+            'excerpt' => $payload['excerpt'] ?? null,
+            'content' => $payload['content'],
+            'seo_meta' => $meta,
+            'schema_meta' => $schema,
+            'is_featured' => $payload['is_featured'] ?? false,
+            'approval_status' => config('freeeducation.features.content_approval_required', true) ? 'pending' : 'approved',
+            'published_at' => ($payload['publish_now'] ?? false) ? now() : null,
+        ]);
+
+        $tagIds = collect($payload['tags'] ?? [])->map(function (string $tag): int {
+            return Tag::query()->firstOrCreate(['slug' => Str::slug($tag)], ['name' => $tag])->id;
+        })->all();
+
+        $post->tags()->sync($tagIds);
+
+        return response()->json($post->load('tags'), 201);
+    }
+}

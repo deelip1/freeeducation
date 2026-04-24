@@ -52,6 +52,7 @@ class UserManagementController extends Controller
 
         $user->update($validated);
 
+        return back()->with('status', 'User updated successfully.');
         return back()->with('status', 'User access and subscription updated successfully.');
     }
 
@@ -68,4 +69,5 @@ class UserManagementController extends Controller
 
         return back()->with('status', 'User approved.');
     }
+}
 }
